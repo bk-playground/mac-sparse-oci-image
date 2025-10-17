@@ -38,6 +38,7 @@ if ! command -v oras >/dev/null 2>&1; then
 fi
 
 oras version
+echo "📦 Cache is at $ORAS_CACHE"
 
 echo "📥 Downloading sparse disk image from OCI registry: $IMAGE_REF"
 cd "$TMP_DIR"
