@@ -24,9 +24,12 @@ cleanup() {
     hdiutil detach "$MOUNT_POINT" 2>/dev/null || true
   fi
   if [[ -d "$TMP_DIR" ]]; then
-    echo "🧹 Cleaning up temporary files..."
-    rm -rf "$TMP_DIR"
+    rm -rf "$TMP_DIR" 2>/dev/null || true
   fi
+  # Note: We don't remove the sparse image file because:
+  # 1. The environment is ephemeral
+  # 2. Removing it might interfere with oras caching
+  # 3. The cache volume persists between builds anyway
 }
 
 trap cleanup EXIT
@@ -60,11 +63,7 @@ if [[ -z "$SPARSE_IMAGE" ]]; then
 fi
 
 echo "📦 Found sparse image at: $SPARSE_IMAGE"
-echo "📦 Moving sparse image to working directory..."
-mv "$SPARSE_IMAGE" "$TMP_DIR/flutter.sparseimage"
-SPARSE_IMAGE="$TMP_DIR/flutter.sparseimage"
-
-echo "✅ Downloaded: $SPARSE_IMAGE"
+echo "✅ Using sparse image from cache location"
 
 echo "💾 Mounting sparse disk image..."
 mkdir -p "$MOUNT_POINT"
@@ -84,3 +83,6 @@ echo "🚀 Running Flutter version..."
 flutter --version
 
 echo "✅ Flutter SDK verification complete!"
+
+echo "📦 Final cache state:"
+find $ORAS_CACHE -ls
