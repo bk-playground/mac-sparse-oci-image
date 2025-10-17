@@ -6,5 +6,11 @@ agents:
 
 steps:
   - label: ":package: Build flutter image"
+    key: "build-flutter-image"
     command:
       - "./flutter-sdk-to-oci.sh"
+
+  - label: ":rocket: Mount and verify flutter image"
+    command:
+      - "./mount-flutter-image.sh"
+    depends_on: ["build-flutter-image"]
