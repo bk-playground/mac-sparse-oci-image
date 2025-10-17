@@ -40,6 +40,8 @@ fi
 oras version
 echo "📦 Cache is at $ORAS_CACHE"
 
+find $ORAS_CACHE -ls
+
 echo "📥 Downloading sparse disk image from OCI registry: $IMAGE_REF"
 cd "$TMP_DIR"
 oras pull "$IMAGE_REF" --allow-path-traversal
