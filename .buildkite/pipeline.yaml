@@ -7,4 +7,4 @@ agents:
 steps:
   - label: ":package: Build flutter image"
     command:
-      - "./sparse-oci-image.sh"
+      - "./flutter-sdk-to-oci.sh"
