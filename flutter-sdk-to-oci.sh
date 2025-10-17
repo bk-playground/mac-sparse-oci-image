@@ -15,11 +15,16 @@ fi
 # Check if the OCI image already exists
 IMAGE_REF="${BUILDKITE_HOSTED_REGISTRY_URL}/my-flutter-image:${FLUTTER_VERSION}"
 echo "🔍 Checking if image already exists: $IMAGE_REF"
-if oras manifest fetch "$IMAGE_REF" >/dev/null 2>&1; then
+echo "🐛 Debug: Running 'oras manifest fetch \"$IMAGE_REF\"'"
+if oras manifest fetch "$IMAGE_REF" 2>&1 | tee /tmp/oras-check.log; then
   echo "✅ Image $IMAGE_REF already exists in the registry. Skipping build."
   exit 0
+else
+  echo "📦 Image does not exist. Proceeding with build..."
+  echo "🐛 Debug: oras manifest fetch failed with exit code $?"
+  echo "🐛 Debug: Output was:"
+  cat /tmp/oras-check.log
 fi
-echo "📦 Image does not exist. Proceeding with build..."
 
 FLUTTER_ZIP_URL="https://storage.googleapis.com/flutter_infra_release/releases/stable/macos/flutter_macos_arm64_${FLUTTER_VERSION}-stable.zip"
 TMP_DIR="$(mktemp -d)"

@@ -31,11 +31,13 @@ cleanup() {
 
 trap cleanup EXIT
 
-# Check if oras is installed
+# Check if oras is installed, if not install it
 if ! command -v oras >/dev/null 2>&1; then
-  echo "❌ oras is not installed. Please install it first: brew install oras"
-  exit 1
+  echo "📥 Installing oras..."
+  brew install oras
 fi
+
+oras version
 
 echo "📥 Downloading sparse disk image from OCI registry: $IMAGE_REF"
 oras pull "$IMAGE_REF" --output "$TMP_DIR"
