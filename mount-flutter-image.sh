@@ -44,6 +44,8 @@ echo "📥 Downloading sparse disk image from OCI registry: $IMAGE_REF"
 cd "$TMP_DIR"
 oras pull "$IMAGE_REF" --allow-path-traversal
 
+find $ORAS_CACHE -ls
+
 # Debug: Check what was downloaded
 echo "🔍 Searching for downloaded sparse image..."
 SPARSE_IMAGE=$(find /var/folders -name "flutter.sparseimage" -type f -mmin -5 2>/dev/null | head -n 1 || true)
