@@ -62,6 +62,6 @@ hdiutil detach "$MOUNT_POINT"
 echo "✅ Sparse disk image detached."
 
 echo "📤 Uploading sparse disk image to OCI registry ${BUILDKITE_HOSTED_REGISTRY_URL}/my-flutter-image:${FLUTTER_VERSION}..."
-oras push "${BUILDKITE_HOSTED_REGISTRY_URL}/my-flutter-image:${FLUTTER_VERSION}" --artifact-type "application/vnd.apple.disk-image.sparse" "$TMP_DIR/flutter.sparseimage"
+oras push "${BUILDKITE_HOSTED_REGISTRY_URL}/my-flutter-image:${FLUTTER_VERSION}" --artifact-type "application/vnd.apple.disk-image.sparse" --disable-path-validation "$TMP_DIR/flutter.sparseimage"
 echo "✅ Sparse disk image uploaded to OCI registry."
 echo "✅ Cleanup complete."
