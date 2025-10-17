@@ -1,0 +1,10 @@
+env:
+  FLUTTER_VERSION: "3.32.5"
+
+agents:
+  queue: "macos"
+
+steps:
+  - label: ":package: Build flutter image"
+    command:
+      - "./sparse-oci-image.sh"
