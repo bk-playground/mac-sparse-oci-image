@@ -40,7 +40,8 @@ fi
 oras version
 
 echo "📥 Downloading sparse disk image from OCI registry: $IMAGE_REF"
-oras pull "$IMAGE_REF" --output "$TMP_DIR" --allow-path-traversal
+cd "$TMP_DIR"
+oras pull "$IMAGE_REF" --allow-path-traversal
 
 # Debug: List contents of temp directory
 echo "📁 Contents of $TMP_DIR:"
