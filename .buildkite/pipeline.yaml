@@ -4,6 +4,11 @@ env:
 agents:
   queue: "macos"
 
+cache:
+  paths:
+    - "~/.oras/cache"
+  size: "20g"
+
 steps:
   - label: ":package: Build flutter image"
     key: "build-flutter-image"
