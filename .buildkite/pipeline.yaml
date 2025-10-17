@@ -1,13 +1,13 @@
 env:
   FLUTTER_VERSION: "3.32.5"
-  ORAS_CACHE: ~/.oras/cache
+  ORAS_CACHE: /oras-cache
 
 agents:
   queue: "macos"
 
 cache:
   paths:
-    - ~/.oras/cache
+    - /oras-cache
   size: "20g"
 
 steps:
