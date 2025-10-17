@@ -40,7 +40,7 @@ fi
 oras version
 
 echo "📥 Downloading sparse disk image from OCI registry: $IMAGE_REF"
-oras pull "$IMAGE_REF" --output "$TMP_DIR"
+oras pull "$IMAGE_REF" --output "$TMP_DIR" --allow-path-traversal
 
 # Find the sparse image file
 SPARSE_IMAGE=$(find "$TMP_DIR" -name "*.sparseimage" | head -n 1)

@@ -12,6 +12,14 @@ if [[ -z "${BUILDKITE_HOSTED_REGISTRY_URL:-}" ]]; then
   exit 1
 fi
 
+# Check if oras is installed, if not install it
+if ! command -v oras >/dev/null 2>&1; then
+  echo "📥 Installing oras..."
+  brew install oras
+fi
+
+oras version
+
 # Check if the OCI image already exists
 IMAGE_REF="${BUILDKITE_HOSTED_REGISTRY_URL}/my-flutter-image:${FLUTTER_VERSION}"
 echo "🔍 Checking if image already exists: $IMAGE_REF"
@@ -45,14 +53,6 @@ cleanup() {
 }
 
 trap cleanup EXIT
-
-# Check if oras is installed, if not install it
-if ! command -v oras >/dev/null 2>&1; then
-  echo "📥 Installing oras..."
-  brew install oras
-fi
-
-oras version
 
 # this script creates a sparse disk image on macos then uploads it to an OCI registry using oras
 
