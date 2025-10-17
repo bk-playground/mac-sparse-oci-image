@@ -41,18 +41,23 @@ oras version
 
 echo "📥 Downloading sparse disk image from OCI registry: $IMAGE_REF"
 cd "$TMP_DIR"
-oras pull "$IMAGE_REF"
+oras pull "$IMAGE_REF" --allow-path-traversal
 
-# Debug: List contents of temp directory
-echo "📁 Contents of $TMP_DIR:"
-ls -la "$TMP_DIR"
+# Debug: Check what was downloaded
+echo "🔍 Searching for downloaded sparse image..."
+SPARSE_IMAGE=$(find /var/folders -name "flutter.sparseimage" -type f -mmin -5 2>/dev/null | head -n 1 || true)
 
-# Find the sparse image file
-SPARSE_IMAGE=$(find "$TMP_DIR" -name "*.sparseimage" | head -n 1)
 if [[ -z "$SPARSE_IMAGE" ]]; then
-  echo "❌ No sparse image file found in downloaded artifacts"
+  echo "❌ No sparse image file found after download"
+  echo "📁 Checking /var/folders for any .sparseimage files:"
+  find /var/folders -name "*.sparseimage" -type f -mmin -5 2>/dev/null || echo "No .sparseimage files found"
   exit 1
 fi
+
+echo "📦 Found sparse image at: $SPARSE_IMAGE"
+echo "📦 Moving sparse image to working directory..."
+mv "$SPARSE_IMAGE" "$TMP_DIR/flutter.sparseimage"
+SPARSE_IMAGE="$TMP_DIR/flutter.sparseimage"
 
 echo "✅ Downloaded: $SPARSE_IMAGE"
 
