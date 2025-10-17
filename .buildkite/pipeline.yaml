@@ -1,5 +1,6 @@
 env:
   FLUTTER_VERSION: "3.32.5"
+  ORAS_CACHE: "~/.oras/cache"
 
 agents:
   queue: "macos"
