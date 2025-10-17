@@ -38,7 +38,7 @@ oras version
 # this script creates a sparse disk image on macos then uploads it to an OCI registry using oras
 
 echo "📦 Creating sparse disk image..."
-hdiutil create -size 4g -type SPARSE -fs APFS -volname "Flutter" "$TMP_DIR/flutter.sparseimage"
+hdiutil create -size 8g -type SPARSE -fs APFS -volname "Flutter" "$TMP_DIR/flutter.sparseimage"
 hdiutil attach "$TMP_DIR/flutter.sparseimage" -mountpoint "$MOUNT_POINT"
 echo "✅ Sparse disk image created and mounted at $MOUNT_POINT"
 
@@ -61,7 +61,7 @@ echo "💾 Detaching sparse disk image..."
 hdiutil detach "$MOUNT_POINT"
 echo "✅ Sparse disk image detached."
 
-echo "📤 Uploading sparse disk image to OCI registry..."
-oras push "oci://my-oci-registry.com/my-flutter-image:latest" --artifact-type "application/vnd.apple.disk-image.sparse" "$TMP_DIR/flutter.sparseimage"
+echo "📤 Uploading sparse disk image to OCI registry ${BUILDKITE_HOSTED_REGISTRY_URL}/my-flutter-image:${FLUTTER_VERSION}..."
+oras push "${BUILDKITE_HOSTED_REGISTRY_URL}/my-flutter-image:${FLUTTER_VERSION}" --artifact-type "application/vnd.apple.disk-image.sparse" "$TMP_DIR/flutter.sparseimage"
 echo "✅ Sparse disk image uploaded to OCI registry."
 echo "✅ Cleanup complete."
